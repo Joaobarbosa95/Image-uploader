@@ -1,7 +1,9 @@
 const express = require("express");
 const path = require("path");
+const multer = require("multer");
 
 const app = express();
+const upload = multer({ dest: "public/images/" });
 
 const port = process.env.PORT || 7000;
 const staticFiles = path.join(__dirname, "./public");

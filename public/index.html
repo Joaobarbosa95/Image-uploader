@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image-uploader</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
 </head>
 
 <body>
@@ -13,9 +17,14 @@
         <div class="flex-container">
             <div class="title">Upload Your Image</div>
             <div class="description">File should be Jpeg, Png...</div>
-            <div class="drag_and_drop">Drop your image here</div>
+            <div class="drag_and_drop" >    
+                <div class="box" draggable="true" id="eu">
+                    <img class="img-prev" src="image.png">
+                    <p>Drag and drop your image here</p>
+                </div>
+            </div>
             <div class="or">or</div>
-            <div class="file_chooser"><button>Choose a file</button></div>
+            <div class="file_chooser"><button id="button">Choose a file</button></div>
         </div>
     </div>  
 </body>

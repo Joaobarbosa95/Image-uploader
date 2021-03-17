@@ -1,0 +1,8 @@
+.box {
+    width: 500px;
+    height: 500px;
+    border: 1px dashed#97BEF4;
+    border-radius: 12px;
+    background-color: rgb(189, 198, 212);
+    
+}
