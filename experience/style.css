@@ -1,8 +1,55 @@
-.box {
-    width: 500px;
-    height: 500px;
-    border: 1px dashed#97BEF4;
+.loading_box {
+    width: 400px;
+    height: 143px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    background-color: rgb(189, 198, 212);
-    
 }
+
+.uploading {
+    color: rgba(79, 79, 79, 1);
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: -0.035em;
+    position: relative;
+    top: 40px;
+    left: 50px;
+}
+
+
+.loading {
+    background-color:rgb(238, 238, 238);
+    width: 75%;
+    height: 8px;
+    margin: auto;
+    border-radius: 10px;
+    overflow:-moz-hidden-unscrollable;
+    position: relative;
+    top: 40px;
+}
+
+.load_bar {
+    border-radius: 10px;
+    position: relative;
+    background-color: #2F80ED;
+    width: 30%;
+    height: 100%;
+    animation-name: "bar";
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes bar {
+    0% {
+        left: -90px;
+    }
+    100% {
+        left: 300px;
+    }
+}
+
