@@ -4,11 +4,17 @@ const flexContainer = document.querySelector(".flex_container");
 const container = document.querySelector(".container");
 
 button.addEventListener("click", (e) => {
-  // Open file chooser
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "image/*";
   input.click();
+  input.addEventListener("change", (e) => {
+    const img = e.target.files[0];
+    clearView();
+    addLoadingBar();
+    fetchImage(img);
+    renderImage(img);
+  });
 });
 
 box.addEventListener("dragsenter", (e) => {
@@ -24,42 +30,68 @@ box.addEventListener("dragleave", (e) => {
   box.classList.remove("drag-over");
 });
 
-box.addEventListener("drop", (e) => {
+box.addEventListener("drop", async (e) => {
   e.preventDefault();
-  box.classList.remove("drag-over");
-  const data = e.dataTransfer.files[0];
-  box.innerHTML = "";
 
-  flexContainer.classList.add("hidden");
+  const img = e.dataTransfer.files[0];
 
+  clearView();
+  addLoadingBar();
+  fetchImage(img);
+  renderImage(img);
+});
+
+// utils
+function removeLoadingBar(element) {
+  const load = document.querySelector(`.${element}`);
+  load.parentNode.removeChild(load);
+}
+
+function addLoadingBar() {
   const html =
     "<div class='loading_box'> <p class='uploading'>Uploading...</p> <div class='loading'> <div class='load_bar'><div></div> </div>";
 
   container.insertAdjacentHTML("beforeend", html);
+}
 
-  // read img
+async function fetchImage(data) {
+  const form = new FormData();
+  form.append("image", data);
+
+  await fetch("/", {
+    method: "post",
+    body: form,
+  }).then((res) => console.log("Success"));
+}
+
+function img(result) {
+  const img = document.createElement("img");
+  img.files = result;
+  img.classList.add("box-img");
+  box.appendChild(img);
+  img.setAttribute("src", result);
+}
+
+function clearView() {
+  flexContainer.classList.add("hidden");
+  box.innerHTML = "";
+  box.classList.remove("drag-over");
+}
+
+function renderImage(data) {
   const reader = new FileReader();
+
   reader.onload = function (event) {
-    box.innerHTML = "";
-    box.classList.add("box-2");
     box.classList.remove("box");
+    box.classList.add("box-2");
 
     // img
-    const img = document.createElement("img");
-    img.files = data;
-    img.classList.add("box-img");
-    box.appendChild(img);
-    img.setAttribute("src", event.target.result);
+    img(event.target.result);
 
     // render screen
-    removeLoading("loading_box");
+    removeLoadingBar("loading_box");
     flexContainer.classList.remove("hidden");
   };
 
-  setTimeout(() => reader.readAsDataURL(data), 5000);
-});
-
-function removeLoading(element) {
-  const load = document.querySelector(`.${element}`);
-  load.parentNode.removeChild(load);
+  reader.readAsDataURL(data);
 }
