@@ -34,10 +34,8 @@ box.addEventListener("drop", async (e) => {
   e.preventDefault();
 
   const img = e.dataTransfer.files[0];
-
   clearView();
   addLoadingBar();
-  fetchImage(img);
   renderImage(img);
 });
 
@@ -58,18 +56,10 @@ async function fetchImage(data) {
   const form = new FormData();
   form.append("image", data);
 
-  await fetch("/", {
+  return await fetch("/", {
     method: "post",
     body: form,
-  }).then((res) => console.log("Success"));
-}
-
-function img(result) {
-  const img = document.createElement("img");
-  img.files = result;
-  img.classList.add("box-img");
-  box.appendChild(img);
-  img.setAttribute("src", result);
+  }).then((data) => data.status);
 }
 
 function clearView() {
@@ -78,15 +68,41 @@ function clearView() {
   box.classList.remove("drag-over");
 }
 
-function renderImage(data) {
+async function renderImage(data) {
+  const status = await fetchImage(data);
+
   const reader = new FileReader();
 
   reader.onload = function (event) {
-    box.classList.remove("box");
-    box.classList.add("box-2");
+    const html = `<div class='flex_container_load' ><img class='icon' src='https://www.aeptc.org/Content/images/success-icon-10.png'><div class='title'>Upload Successfully!</div><div class='drag_and_drop'><div class='box-2' name='image'><img class="box-img" src='${event.target.result}'></div> </div><div class='file_chooser'><input type='text'><button id='button clipboard'>Copy Link</button></div></div>'`;
 
-    // img
-    img(event.target.result);
+    removeLoadingBar("flex_container");
+    container.insertAdjacentHTML("afterbegin", html);
+
+    const input = document.querySelector("input");
+    const title = document.querySelector(".title");
+    const icon = document.querySelector(".icon");
+    const b = document.querySelector(".box-2");
+
+    if (!document.querySelector(".box-img").src.includes("image")) {
+      title.textContent = "Upload Failed";
+      icon.src =
+        "https://uxwing.com/wp-content/themes/uxwing/download/01-user_interface/failed.png";
+      b.textContent = "Insert images only";
+    } else if (status === 401) {
+      title.textContent = "Upload Failed";
+      icon.src =
+        "https://uxwing.com/wp-content/themes/uxwing/download/01-user_interface/failed.png";
+      b.textContent = "Image name must be unique";
+    } else {
+      input.value = window.location.href + "photo-" + data.name;
+    }
+
+    document.querySelector("button").addEventListener("click", (e) => {
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+    });
 
     // render screen
     removeLoadingBar("loading_box");

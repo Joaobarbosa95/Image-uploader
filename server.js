@@ -11,7 +11,22 @@ const staticFiles = path.join(__dirname, "./public");
 app.use(express.static(staticFiles));
 
 app.post("/", upload.single("image"), (req, res) => {
-  console.log("Upload Sucessful");
+  if (!req.file) {
+    res.sendStatus(401);
+  } else {
+    res.status(201).send();
+  }
+});
+
+app.get("/photo-*", (req, res) => {
+  try {
+    const img = req.originalUrl.slice(7);
+    const filePath = __dirname + `\\public\\images\\${img}`;
+    fs.accessSync(filePath);
+    res.sendFile(filePath);
+  } catch (e) {
+    res.send("<h1>Image not found</h1>");
+  }
 });
 
 app.listen(port, () => console.log("Server running on port %s", port));
