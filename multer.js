@@ -1,9 +1,11 @@
 const multer = require("multer");
 const fs = require("fs");
+const path = require("path");
 
+const filePath = path.join(__dirname + "./images");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, __dirname + "\\images");
+    cb(null, filePath);
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -15,7 +17,7 @@ module.exports = multer({
   fileFilter: function (req, file, cb) {
     let success;
     try {
-      fs.accessSync(__dirname + `\\images\\${file.originalname}`);
+      fs.accessSync(path.join(__dirname + `/images/${file.originalname}`));
       success = true;
     } catch (e) {
       success = false;
