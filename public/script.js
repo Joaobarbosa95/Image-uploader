@@ -12,7 +12,6 @@ button.addEventListener("click", (e) => {
     const img = e.target.files[0];
     clearView();
     addLoadingBar();
-    fetchImage(img);
     renderImage(img);
   });
 });
@@ -56,7 +55,7 @@ async function fetchImage(data) {
   const form = new FormData();
   form.append("image", data);
 
-  return await fetch("/", {
+  return await fetch("https://image-uploader-basic.herokuapp.com/", {
     method: "post",
     body: form,
   }).then((data) => data.status);
