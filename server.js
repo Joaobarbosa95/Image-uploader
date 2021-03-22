@@ -21,7 +21,7 @@ app.post("/", upload.single("image"), (req, res) => {
 app.get("/photo-*", (req, res) => {
   try {
     const img = req.originalUrl.slice(7);
-    const filePath = path.join(__dirname + `./images/${img}`);
+    const filePath = path.join(__dirname, `./images/${img}`);
     console.log(filePath);
     console.log(fs.accessSync(filePath));
     fs.accessSync(filePath);
